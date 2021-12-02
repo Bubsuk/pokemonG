@@ -1,25 +1,23 @@
 #pragma once
 #include "GameEntity.h"
 
-class MapEditor;
 class Image;
-class Collider;
-class Physcis;
-class TitleScene;
-
 class MainGame : public GameEntity
 {
 private:
+	// 타이머
 	HANDLE hTimer;
+	
+	// UI
+	char text[128];
 
 	int mousePosX;
 	int mousePosY;
 	int clickedMousePosX;
 	int clickedMousePosY;
 
+	// 백버퍼
 	Image* backBuffer;
-
-	MapEditor* mapEditor;
 
 public:
 	HRESULT Init();
