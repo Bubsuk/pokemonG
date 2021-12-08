@@ -11,10 +11,11 @@ using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
-#define WIN_START_POS_X	1500
+
+#define WIN_START_POS_X	100
 #define WIN_START_POS_Y	100
-#define WIN_SIZE_X	640
-#define WIN_SIZE_Y	576
+#define WIN_SIZE_X	1600 //640
+#define WIN_SIZE_Y	960 //576
 
 #define PI 3.14159265357989
 #define PI2 (3.14159265357989 * 2)
@@ -26,16 +27,9 @@ using namespace std;
 #define SAFE_UPDATE(p) { if (p) { p->Update(); } }
 #define SAFE_RENDER(p) { if (p) { p->Render(hdc); } }
 
-enum class eDir
-{
-    Idle, Up, Left, Down, Right
-};
-
-enum class eCharacter
-{
-    Mom, Doctor_O, Osub, Nurse, Master, SubMaster, Mart
-};
-
+#include "Header.h"
+#include "Macro.h"
+#include "Enum.h"
 #include "TimerManager.h"
 #include "ImageManager.h"
 #include "KeyManager.h"
@@ -48,36 +42,20 @@ enum class eCharacter
 
 #define DELTA_TIME TIMER_MGR->GetDeltaTime()
 
-//#define TILE_COUNT_X 26
-//#define TILE_COUNT_Y 26
-
 #define TILE_START_POS_X ((WIN_SIZE_X - (TILE_SIZE * TILE_COUNT_X)) / 2)
 #define TILE_START_POS_Y ((WIN_SIZE_Y - (TILE_SIZE * TILE_COUNT_Y)) / 2)
 
 #define RANDOM(min, max) (rand() % ((max) - (min) + 1) + (min))
 
+#define SAMPLE_TILE_SIZE 40
+#define TILE_SIZE	64
+#define TILE_MAP_TOOL_X 1600
+#define TILE_MAP_TOOL_Y 960
+#define TILE_COUNT_X	130
+#define TILE_COUNT_Y	40
+#define SAMPLE_TILE_COUNT_X	15
+#define SAMPLE_TILE_COUNT_Y	15
 
-enum class eTerrain { None };
-
-struct TagTile
-{
-    RECT		TileShape;
-    POINT		TilePos;
-    eTerrain	Terrain;
-    int			TileState;
-    int			CollisionCount;
-    bool        NexusAroundTile;
-
-    TagTile()
-    {
-        TileShape = {};
-        TilePos = {};
-        Terrain = eTerrain::None;
-        TileState = 0;
-        CollisionCount = 0;
-        NexusAroundTile = false;
-    };
-};
 
 
 extern HWND g_hWnd;

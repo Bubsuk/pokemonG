@@ -17,7 +17,7 @@ HRESULT Jiwoo::Init()
     mPos.x = WIN_SIZE_X / 2 - 32;
     mPos.y = WIN_SIZE_Y / 2;
 
-    state = eDir::Idle;
+    mState = eDir::Idle;
 
     return S_OK;
 }
@@ -32,25 +32,26 @@ void Jiwoo::Update()
             mElapsedCount -= MAX_ANIM_TIME;
 
         }*/
-        state = eDir::Down;
+        mState = eDir::Down;
     }
     else if (KEY_MGR->IsOnceKeyDown(VK_UP))
     {
-        state = eDir::Up;
+        mState = eDir::Up;
     }
     else if (KEY_MGR->IsOnceKeyDown(VK_LEFT))
     {
-        state = eDir::Left;
+        mState = eDir::Left;
     }
     else if (KEY_MGR->IsOnceKeyDown(VK_RIGHT))
     {
-        state = eDir::Right;
+        mState = eDir::Right;
     }
 }
 
 void Jiwoo::Render(HDC hdc)
 {
-    switch (state)
+    
+    switch (mState)
     {
     case eDir::Idle:
         mImage->Render(hdc, mPos.x, mPos.y, frameX + 1, frameY);

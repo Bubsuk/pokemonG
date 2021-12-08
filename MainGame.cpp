@@ -3,7 +3,9 @@
 #include "Image.h"
 #include "CommonFunction.h"
 #include "TestScene.h"
+#include "MapScene.h"
 
+#define TILETOOL
 
 HRESULT MainGame::Init()
 {
@@ -11,6 +13,9 @@ HRESULT MainGame::Init()
 	IMG_MGR->Init();
 	TIMER_MGR->Init();
 	SCENE_MGR->Init();
+
+	SCENE_MGR->AddScene(eSceneTag::TestScene, new TestScene);
+	SCENE_MGR->AddScene(eSceneTag::MapToolScene, new MapScene);
 
 	srand((unsigned int)time(nullptr));
 
@@ -22,14 +27,21 @@ HRESULT MainGame::Init()
 	clickedMousePosX = 0;
 	clickedMousePosY = 0;
 
-	// 백버퍼
+	// 백버퍼 맥스사이즈 다시보기
 	backBuffer = new Image();
-	backBuffer->Init("Image/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 
-	SCENE_MGR->AddScene(eSceneTag::TestScene, new TestScene);
+#ifdef TILETOOL
+	SCENE_MGR->ChangeScene(eSceneTag::MapToolScene);
+	int maxSizeX = TILE_MAP_TOOL_X;
+	int maxSizeY = TILE_MAP_TOOL_Y;
+
+#else
 	SCENE_MGR->ChangeScene(eSceneTag::TestScene);
+	int maxSizeX = WIN_SIZE_X;
+	int maxSizeY = WIN_SIZE_Y;
+#endif // TILETOOL
 
-
+	backBuffer->Init("Image/mapImage.bmp", maxSizeX, maxSizeY);
 
 	return S_OK;
 }
@@ -45,6 +57,7 @@ void MainGame::Update()
 
 void MainGame::Render(HDC hdc)
 {
+	//PatBlt(hdc, 0, 0, WIN_SIZE_X, WIN_SIZE_Y, WHITENESS);
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
 	SCENE_MGR->Render(hBackBufferDC);

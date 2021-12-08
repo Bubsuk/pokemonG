@@ -66,6 +66,12 @@ void ImageManager::Init()
 
 	// 배경
 	AddImage(eImageTag::StartRoom, "Image/pokemon_start_home1.bmp", 640, 512);
+	AddImage(eImageTag::Background, "Image/mapImage.bmp", 1024, 768);
+
+	// 타일
+	AddImage(eImageTag::SampleTile, "Image/pokemon_tile.bmp", 600, 600, 15, 15, true, RGB(255, 0, 255));
+	AddImage(eImageTag::DrawTile, "Image/pokemon_tile.bmp", 960, 960, 15, 15, true, RGB(255, 0, 255));
+	
 }
 
 void ImageManager::Release()

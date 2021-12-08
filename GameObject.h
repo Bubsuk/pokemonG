@@ -24,10 +24,10 @@ public:
 	virtual void Render();
 
 	//inline Collider* GetCollider() { return mCollider; }
-	inline POINTFLOAT GetPosition() { return mPos; }
-	inline void SetPosition(POINTFLOAT pos) { mPos = pos; }
-	inline eDir GetDirection() { return mDir; }
-	inline void SetDirection(eDir dir) { mDir = dir; }
+	POINTFLOAT GetPosition() { return mPos; }
+	void SetPosition(POINTFLOAT pos) { mPos = pos; }
+	eDir GetDirection() { return mDir; }
+	void SetDirection(eDir dir) { mDir = dir; }
 
 	//virtual void OnCollided(eCollisionDir dir, int tag) override;
 };

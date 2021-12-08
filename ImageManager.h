@@ -17,7 +17,10 @@ enum class eImageTag
 	Jangcro_R, Jangcro_F,
 
 	// 배경
-	StartRoom
+	StartRoom, Background,
+
+	// 타일
+	SampleTile, DrawTile,
 
 };
 

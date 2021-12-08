@@ -7,7 +7,7 @@ private:
 	Image* mImageRunRL = nullptr;
 	Image* mImageRunUD = nullptr;
 
-	eDir state;
+	eDir mState;
 
 	int frameX = 0;
 	int frameY = 0;
