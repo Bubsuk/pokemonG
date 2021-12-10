@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Config.h"
 #include "Image.h"
 
@@ -222,4 +223,10 @@ void Image::Render(HDC hdc, int destX, int destY, int frameX, int frameY, float 
 			imageInfo->frameHeight * frameY,
 			SRCCOPY);
 	}
+}
+
+// Ä«¸Þ¶ó
+void Image::CameraRender(HDC hdc, int destX, int destY, int renderStartX, int renderStartY, int rendersizeX, int renderSizeY)
+{
+
 }

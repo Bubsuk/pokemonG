@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Config.h"
 #include "ImageManager.h"
 #include "Image.h"

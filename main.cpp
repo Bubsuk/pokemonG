@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <crtdbg.h>
 #include "Config.h"
 #include "CommonFunction.h"

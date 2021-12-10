@@ -66,7 +66,8 @@ public:
 	void Render(HDC hdc, int destX, int destY);
 	void Render(HDC hdc, int destX, int destY, float scale);
 	void Render(HDC hdc, int destX, int destY, int frameX, int frameY, float scale = 1.0f);
-	//void CameraRender(HDC hdc, int destX = 0, int destY = 0, int renderStartX = 0, int renderStartY = 0);
+	// Ä«¸Þ¶ó
+	void CameraRender(HDC hdc, int destX, int destY, int renderStartX, int renderStartY, int rendersizeX, int renderSizeY);
 
 
 

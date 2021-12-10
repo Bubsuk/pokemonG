@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Config.h"
 #include "MainGame.h"
 #include "Image.h"
@@ -13,6 +14,7 @@ HRESULT MainGame::Init()
 	IMG_MGR->Init();
 	TIMER_MGR->Init();
 	SCENE_MGR->Init();
+
 
 	SCENE_MGR->AddScene(eSceneTag::TestScene, new TestScene);
 	SCENE_MGR->AddScene(eSceneTag::MapToolScene, new MapScene);
@@ -57,8 +59,8 @@ void MainGame::Update()
 
 void MainGame::Render(HDC hdc)
 {
-	//PatBlt(hdc, 0, 0, WIN_SIZE_X, WIN_SIZE_Y, WHITENESS);
 	HDC hBackBufferDC = backBuffer->GetMemDC();
+	PatBlt(hBackBufferDC, 0, 0, WIN_SIZE_X, WIN_SIZE_Y, WHITENESS);
 
 	SCENE_MGR->Render(hBackBufferDC);
 	TIMER_MGR->Render(hBackBufferDC);

@@ -34,11 +34,13 @@ using namespace std;
 #include "ImageManager.h"
 #include "KeyManager.h"
 #include "SceneManager.h"
+#include "CameraManager.h"
 
 #define TIMER_MGR TimerManager::GetSingleton()
 #define KEY_MGR KeyManager::GetSingleton()
 #define SCENE_MGR SceneManager::GetSingleton()
 #define IMG_MGR ImageManager::GetSingleton()
+#define CAM_MGR CameraManager::GetSingleton()
 
 #define DELTA_TIME TIMER_MGR->GetDeltaTime()
 
