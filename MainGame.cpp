@@ -10,7 +10,7 @@
 
 HRESULT MainGame::Init()
 {
-	KEY_MGR->Init();
+	Input::Init(g_hWnd);
 	IMG_MGR->Init();
 	TIMER_MGR->Init();
 	SCENE_MGR->Init();
@@ -52,7 +52,7 @@ void MainGame::Update()
 {
 	TIMER_MGR->Update();
 	SCENE_MGR->Update();
-	KEY_MGR->Update();
+	Input::Update();
 
 	InvalidateRect(g_hWnd, NULL, false);
 }
@@ -75,13 +75,11 @@ void MainGame::Release()
 	TIMER_MGR->Release();
 	TIMER_MGR->ReleaseSingleton();
 
-	KEY_MGR->Release();
-	KEY_MGR->ReleaseSingleton();
-
 	SCENE_MGR->Release();
 	SCENE_MGR->ReleaseSingleton();
 
-
+	IMG_MGR->Release();
+	IMG_MGR->ReleaseSingleton();
 
 	KillTimer(g_hWnd, 0);
 }

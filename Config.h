@@ -32,12 +32,12 @@ using namespace std;
 #include "Enum.h"
 #include "TimerManager.h"
 #include "ImageManager.h"
-#include "KeyManager.h"
+#include "Input.h"
 #include "SceneManager.h"
 #include "CameraManager.h"
 
 #define TIMER_MGR TimerManager::GetSingleton()
-#define KEY_MGR KeyManager::GetSingleton()
+#define KEY_MGR Input::GetSingleton()
 #define SCENE_MGR SceneManager::GetSingleton()
 #define IMG_MGR ImageManager::GetSingleton()
 #define CAM_MGR CameraManager::GetSingleton()

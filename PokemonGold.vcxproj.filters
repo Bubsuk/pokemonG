@@ -22,6 +22,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{06ffcf06-6cc2-47f3-b9d4-24baa08139eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TileMap">
+      <UniqueIdentifier>{86611aa9-b64d-4b1f-9f1b-2097783c37fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,6 +65,21 @@
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>TileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="OpeningScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MapScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +127,33 @@
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditor.h">
+      <Filter>TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="OpeningScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MapScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

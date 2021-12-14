@@ -25,7 +25,7 @@ HRESULT Jiwoo::Init()
 
 void Jiwoo::Update()
 {
-    if (KEY_MGR->IsStayKeyDown(VK_DOWN))
+    if (Input::GetButtonDown(VK_DOWN))
     {
       /*  mElapsedCount += DELTA_TIME;
         if (mElapsedCount >= MAX_ANIM_TIME)
@@ -35,15 +35,15 @@ void Jiwoo::Update()
         }*/
         mState = eDir::Down;
     }
-    else if (KEY_MGR->IsOnceKeyDown(VK_UP))
+    else if (Input::GetButton(VK_UP))
     {
         mState = eDir::Up;
     }
-    else if (KEY_MGR->IsOnceKeyDown(VK_LEFT))
+    else if (Input::GetButton(VK_LEFT))
     {
         mState = eDir::Left;
     }
-    else if (KEY_MGR->IsOnceKeyDown(VK_RIGHT))
+    else if (Input::GetButton(VK_RIGHT))
     {
         mState = eDir::Right;
     }

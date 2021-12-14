@@ -88,6 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,6 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,7 +141,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Jiwoo.cpp" />
+    <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="MapScene.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -148,13 +153,25 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="OpeningScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Enum.h" />
+    <ClInclude Include="Extern.h" />
+    <ClInclude Include="Header.h" />
     <ClInclude Include="Jiwoo.h" />
+    <ClInclude Include="Macro.h" />
+    <ClInclude Include="MapEditor.h" />
+    <ClInclude Include="MapScene.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
@@ -164,8 +181,10 @@
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="OpeningScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />
