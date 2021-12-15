@@ -39,7 +39,7 @@
     <ClCompile Include="TimerManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="KeyManager.cpp">
+    <ClCompile Include="Input.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="ImageManager.cpp">
@@ -107,7 +107,7 @@
     <ClInclude Include="ImageManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="KeyManager.h">
+    <ClInclude Include="Input.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">

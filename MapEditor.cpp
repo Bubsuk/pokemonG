@@ -5,6 +5,7 @@
 #include "CommonFunction.h"
 #include "Jiwoo.h"
 #include <cmath>
+#include <map>
 
 HRESULT MapEditor::Init()
 {
@@ -14,6 +15,7 @@ HRESULT MapEditor::Init()
 	mDrawTileImage = IMG_MGR->FindImage(eImageTag::DrawTile);
 	mBackground = IMG_MGR->FindImage(eImageTag::Background);
 
+	mbControl = true;
 
 	mTestJiwoo = new Jiwoo;
 	mTestJiwoo->Init();
@@ -21,7 +23,7 @@ HRESULT MapEditor::Init()
 	mMoveSpeed = 300;
 	mMovePixel = { 0,0 };
 
-	mOneTileTime = 1.0f;
+	mOneTileTime = 0.3f;
 	
 	if (mSampleTileImage == nullptr)
 	{
@@ -64,13 +66,13 @@ HRESULT MapEditor::Init()
 			mSampleTileInfo[i * SAMPLE_TILE_COUNT_X + j].TilePos.y = i;
 
 			// 타일별 속성 지정
-			if (0 <= (i * SAMPLE_TILE_COUNT_X + j) && (i * SAMPLE_TILE_COUNT_X + j) <= 7 || (i * SAMPLE_TILE_COUNT_X + j) == 9
-				|| (i * SAMPLE_TILE_COUNT_X + j) == 24 || (i * SAMPLE_TILE_COUNT_X + j) == 25 || 50 <= (i * SAMPLE_TILE_COUNT_X + j)
-				&& (i * SAMPLE_TILE_COUNT_X + j) <= 52 || (i * SAMPLE_TILE_COUNT_X + j) == 58 || (i * SAMPLE_TILE_COUNT_X + j) == 77
+			if ((0 <= (i * SAMPLE_TILE_COUNT_X + j) && (i * SAMPLE_TILE_COUNT_X + j) <= 7) || (i * SAMPLE_TILE_COUNT_X + j) == 9
+				|| (i * SAMPLE_TILE_COUNT_X + j) == 24 || (i * SAMPLE_TILE_COUNT_X + j) == 25 || (50 <= (i * SAMPLE_TILE_COUNT_X + j)
+				&& (i * SAMPLE_TILE_COUNT_X + j) <= 52) || (i * SAMPLE_TILE_COUNT_X + j) == 58 || (i * SAMPLE_TILE_COUNT_X + j) == 77
 				|| (i * SAMPLE_TILE_COUNT_X + j) == 78 || (i * SAMPLE_TILE_COUNT_X + j) == 80 || (i * SAMPLE_TILE_COUNT_X + j) == 158
-				|| (i * SAMPLE_TILE_COUNT_X + j) == 159 || 176 <= (i * SAMPLE_TILE_COUNT_X + j) || (i * SAMPLE_TILE_COUNT_X + j) <= 178
-				|| 191 <= (i * SAMPLE_TILE_COUNT_X + j) && (i * SAMPLE_TILE_COUNT_X + j) <= 193 || 206 <= (i * SAMPLE_TILE_COUNT_X + j)
-				|| (i * SAMPLE_TILE_COUNT_X + j) <= 208 || (i * SAMPLE_TILE_COUNT_X + j) == 211)
+				|| (i * SAMPLE_TILE_COUNT_X + j) == 159 || (176 <= (i * SAMPLE_TILE_COUNT_X + j) && (i * SAMPLE_TILE_COUNT_X + j) <= 178)
+				|| (191 <= (i * SAMPLE_TILE_COUNT_X + j) && (i * SAMPLE_TILE_COUNT_X + j) <= 193) || (206 <= (i * SAMPLE_TILE_COUNT_X + j)
+				&& (i * SAMPLE_TILE_COUNT_X + j) <= 208) || (i * SAMPLE_TILE_COUNT_X + j) == 211)
 			{
 				mSampleTileInfo[i * SAMPLE_TILE_COUNT_X + j].Terrain = eTerrain::Open;
 			}
@@ -114,161 +116,167 @@ HRESULT MapEditor::Init()
 	mDrawArea.top = 0;
 	mDrawArea.right = TILE_SIZE * 15; // 960
 	mDrawArea.bottom = TILE_SIZE * 15; //960
-
-	mSaveIndex = 0;
-
-
 	
 	return S_OK;
 }
 
 void MapEditor::Update()
 {
-	SAFE_UPDATE(mTestJiwoo);
+	
 
-
-	if (Input::GetButton(VK_DOWN))
+	if (mbControl == true)
 	{
-		mDir = eDir::Down;
-		mMovePixel.y -= mMoveSpeed * DELTA_TIME;
-		CAM_MGR->SetPos(mMovePixel);
-
-		mbNeedRevise = false;
-
-		if (mMovePixel.y >= TILE_SIZE * TILE_COUNT_X)
+		if (Input::GetButton(VK_DOWN))
 		{
-			mMovePixel.y = -TILE_SIZE * TILE_COUNT_X;
-			mDestPos.y = -TILE_SIZE * TILE_COUNT_X;
-		}
-		else
-		{
-			mDestPos.y = mMovePixel.y - TILE_SIZE - (mMovePixel.y % TILE_SIZE);
-		}
+			mDir = eDir::Down;
+			mMovePixel.y -= mMoveSpeed * DELTA_TIME;
+			CAM_MGR->SetPos(mMovePixel);
 
-		cout << "mStartPosY : " << mMovePixel.y << endl;
-		cout << "mDestPosY : " << mDestPos.y << endl;
-		cout << "mCurPosY : " << mMovePixel.y << endl;
+			mbNeedRevise = false;
+
+			if (mMovePixel.y <= -TILE_SIZE * TILE_COUNT_Y + TILE_SIZE * 15)
+			{
+				mMovePixel.y = -TILE_SIZE * TILE_COUNT_Y + TILE_SIZE * 15;
+				mDestPos.y = -TILE_SIZE * TILE_COUNT_Y + TILE_SIZE * 15;
+			}
+			else
+			{
+				mDestPos.y = mMovePixel.y - TILE_SIZE - (mMovePixel.y % TILE_SIZE);
+			}
+			
+		}
+		if (Input::GetButtonUp(VK_DOWN))
+		{
+			mbControl = false;
+			mbNeedRevise = true;
+		}
+		if (Input::GetButton(VK_UP))
+		{
+			mDir = eDir::Up;
+			mMovePixel.y += mMoveSpeed * DELTA_TIME;
+			CAM_MGR->SetPos(mMovePixel);
+
+			mbNeedRevise = false;
+
+			if (mMovePixel.y >= 0)
+			{
+				mDestPos.y = 0;
+				mMovePixel.y = 0;
+			}
+			else
+			{
+				mDestPos.y = mMovePixel.y + TILE_SIZE - (TILE_SIZE + (mMovePixel.y % TILE_SIZE));
+			}
+		}
+		if (Input::GetButtonUp(VK_UP))
+		{
+			mbNeedRevise = true;
+			mbControl = false;
+		}
+		if (Input::GetButton(VK_LEFT))
+		{
+			mDir = eDir::Left;
+			mMovePixel.x += mMoveSpeed * DELTA_TIME;
+			CAM_MGR->SetPos(mMovePixel);
+
+			mbNeedRevise = false;
+
+			if (mMovePixel.x >= 0)
+			{
+				mDestPos.x = 0;
+				mMovePixel.x = 0;
+			}
+			else
+			{
+				mDestPos.x = mMovePixel.x + TILE_SIZE - (TILE_SIZE + (mMovePixel.x % TILE_SIZE));
+			}
+		}
+		if (Input::GetButtonUp(VK_LEFT))
+		{
+			mbNeedRevise = true;
+			mbControl = false;
+		}
+		if (Input::GetButton(VK_RIGHT))
+		{
+			mDir = eDir::Right;
+			mMovePixel.x -= mMoveSpeed * DELTA_TIME;
+			CAM_MGR->SetPos(mMovePixel);
+
+			mbNeedRevise = false;
+
+			if (mMovePixel.x <= -TILE_SIZE * TILE_COUNT_X + TILE_SIZE * 15)
+			{
+				mMovePixel.x = -TILE_SIZE * TILE_COUNT_X + TILE_SIZE * 15;
+				mDestPos.x = -TILE_SIZE * TILE_COUNT_X + TILE_SIZE * 15;
+			}
+			else
+			{
+				mDestPos.x = mMovePixel.x - TILE_SIZE - (mMovePixel.x % TILE_SIZE);
+			}
+		}
+		if (Input::GetButtonUp(VK_RIGHT))
+		{
+			mbNeedRevise = true;
+			mbControl = false;
+		}
 	}
-	if (Input::GetButtonUp(VK_DOWN))
-	{
-		mbNeedRevise = true;
-	}
-	if (Input::GetButton(VK_UP))
-	{
-		mDir = eDir::Up;
-		mMovePixel.y += mMoveSpeed * DELTA_TIME;
-		CAM_MGR->SetPos(mMovePixel);
-
-		mbNeedRevise = false;
-
-		if (mMovePixel.y >= 0)
-		{
-			mDestPos.y = 0;
-			mMovePixel.y = 0;
-		}
-		else
-		{
-			mDestPos.y = mMovePixel.y + TILE_SIZE - (TILE_SIZE + (mMovePixel.y % TILE_SIZE));
-		}
-
-		cout << "mStartPosY : " << mMovePixel.y << endl;
-		cout << "mDestPosY : " << mDestPos.y << endl << endl;
-	}
-	if (Input::GetButtonUp(VK_UP))
-	{
-		mbNeedRevise = true;
-	}
-	if (Input::GetButton(VK_LEFT))
-	{
-		mDir = eDir::Left;
-		mMovePixel.x += mMoveSpeed * DELTA_TIME;
-		CAM_MGR->SetPos(mMovePixel);
-
-		mbNeedRevise = false;
-
-		if (mMovePixel.x >= 0)
-		{
-			mDestPos.x = 0;
-			mMovePixel.x = 0;
-		}
-		else
-		{
-			mDestPos.x = mMovePixel.x + TILE_SIZE - (TILE_SIZE + (mMovePixel.x % TILE_SIZE));
-		}
-
-		cout << "mStartPosX : " << mMovePixel.x << endl;
-		cout << "mDestPosX : " << mDestPos.x << endl;
-		cout << "mCurPosX : " << mMovePixel.x << endl;
-	}
-	if (Input::GetButtonUp(VK_LEFT))
-	{
-		mbNeedRevise = true;
-	}
-	if (Input::GetButton(VK_RIGHT))
-	{
-		mDir = eDir::Right;
-		mMovePixel.x -= mMoveSpeed * DELTA_TIME;
-		CAM_MGR->SetPos(mMovePixel);
-
-		mbNeedRevise = false;
-		
-		if (mMovePixel.x >= TILE_SIZE * TILE_COUNT_X)
-		{
-			mMovePixel.x = -TILE_SIZE * TILE_COUNT_X;
-			mDestPos.x = -TILE_SIZE * TILE_COUNT_X;
-		}
-		else
-		{
-			mDestPos.x = mMovePixel.x - TILE_SIZE - (mMovePixel.x % TILE_SIZE);
-		}
-
-		cout << "mStartPosX : " << mMovePixel.x << endl;
-		cout << "mDestPosX : " << mDestPos.x << endl;
-		cout << "mCurPosX : " << mMovePixel.x << endl;
-	} 
-	if (Input::GetButtonUp(VK_RIGHT))
-	{
-		mbNeedRevise = true;
-	}
-
+	// 보간
 	if (mbNeedRevise == true)
 	{
-		CAM_MGR->MovePos(mDestPos, 1.0f, mDir);
+		CAM_MGR->MovePos(mDestPos, mOneTileTime, mDir);
 		mMovePixel = CAM_MGR->GetCamPos();
 
 		if (mDir == eDir::Right && mMovePixel.x <= mDestPos.x)
 		{
 			mbNeedRevise = false;
+			mbControl = true;
 		}
 		if (mDir == eDir::Left && mMovePixel.x >= mDestPos.x)
 		{
 			mbNeedRevise = false;
+			mbControl = true;
 		}
 		else if (mDir == eDir::Up && mMovePixel.y >= mDestPos.y)
 		{
 			mbNeedRevise = false;
+			mbControl = true;
 		}
 		else if (mDir == eDir::Down && mMovePixel.y <= mDestPos.y)
 		{
 			mbNeedRevise = false;
+			mbControl = true;
 		}
 	}
 	
 
 
 	// 저장 부분, 수정 요
-	if (Input::GetButtonDown(VK_CONTROL))
+	if (Input::GetButton(VK_CONTROL))
 	{
-		if (Input::GetButton('1'))
+		if (Input::GetButtonDown('S'))
 		{
-			mSaveIndex = '1';
+			cout << "저장 할 파일명 : ";
+			cin >> mSaveIndex;
 			cout << "\"" << mSaveIndex << "\"" << "에 저장됩니다" << '\n';
+			SaveMap(mSaveIndex);
+		}
+
+	}
+	if (Input::GetButton(VK_LSHIFT))
+	{
+		if (Input::GetButtonDown('S'))
+		{
+			cout << "불러 올 파일명 : ";
+			cin >> mSaveIndex;
+			cout << "\"" << mSaveIndex << "\"" << "을 불러옵니다" << '\n';
+			LoadMap(mSaveIndex);
 		}
 
 	}
 
+
 	// 드래그 시작
-	if (Input::GetButton(VK_LBUTTON))
+	if (Input::GetButtonDown(VK_LBUTTON))
 	{
 		if (PtInRect(&(mSampleArea), g_ptMouse))
 		{
@@ -279,7 +287,7 @@ void MapEditor::Update()
 			// 클릭 드래그 영역 시작값 1로 설정
 			mClickArea.x = 1;
 			mClickArea.y = 1;
-
+			
 		}
 	}
 	// 드래그 끝
@@ -317,25 +325,12 @@ void MapEditor::Update()
 					mTileInfo[(clickPos.y + i) * TILE_COUNT_X + (clickPos.x + j)].TilePos.y = mClickStart.y + i;
 					mTileInfo[(clickPos.y + i) * TILE_COUNT_X + (clickPos.x + j)].Terrain =
 						mSampleTileInfo[(mClickStart.y + i) * SAMPLE_TILE_COUNT_X + (mClickStart.x + j)].Terrain;
-
 				}
 			}
-
-			
 		}
 	}
 
-	/*cout << "Tile Barometer X : " << mTileBarometerPos.x / TILE_SIZE << endl;
-	cout << "Tile Barometer Y : " << mTileBarometerPos.y / TILE_SIZE << endl;
-	cout << "To Tile X : " << (mTileBarometerPos.x + TILE_SIZE) / TILE_SIZE << endl;*/
-	/*cout << "To Tile Y : " << (mTileBarometerPos.y + TILE_SIZE) / TILE_SIZE << endl;*/
-	//cout << "X : " << CAM_MGR->GetCamPos().x << endl;
-	//cout << "Y : " << CAM_MGR->GetCamPos().y << endl << endl;
-	//cout << "SampleX : " << mClickStart.x << endl;
-	//cout << "SampleY : " << mClickStart.y << endl;
-	//cout << "드래그 : " << mClickArea.x << endl;
-	//cout << "드래그 : " << mClickArea.y << endl;
-
+	SAFE_UPDATE(mTestJiwoo);
 
 }
 
@@ -367,8 +362,10 @@ void MapEditor::Render(HDC hdc)
 					mTileInfo[i * TILE_COUNT_X + j].TilePos.x,
 					mTileInfo[i * TILE_COUNT_X + j].TilePos.y);
 
-				Rectangle(hdc, (SAMPLE_TILE_COUNT_X - 1) * TILE_SIZE, 0, SAMPLE_TILE_COUNT_X * TILE_SIZE, SAMPLE_TILE_COUNT_Y * TILE_SIZE);
-				Rectangle(hdc, 0, (SAMPLE_TILE_COUNT_Y - 1) * TILE_SIZE, SAMPLE_TILE_COUNT_X * TILE_SIZE, SAMPLE_TILE_COUNT_Y * TILE_SIZE);
+				//cout << (int)mTileInfo[0].Terrain << endl;
+
+				//Rectangle(hdc, (SAMPLE_TILE_COUNT_X - 1) * TILE_SIZE, 0, SAMPLE_TILE_COUNT_X * TILE_SIZE, SAMPLE_TILE_COUNT_Y * TILE_SIZE);
+				//Rectangle(hdc, 0, (SAMPLE_TILE_COUNT_Y - 1) * TILE_SIZE, SAMPLE_TILE_COUNT_X * TILE_SIZE, SAMPLE_TILE_COUNT_Y * TILE_SIZE);
 			}
 			
 		}
@@ -389,18 +386,20 @@ void MapEditor::Render(HDC hdc)
 		}
 	}
 
-	// 선택 타일 인덱스 표시
-	/*wsprintf(mSampleText, "Sample Tile index : %d, %d", mClickStart.x, mClickStart.y);
-	TextOut(hdc, WIN_SIZE_X - mSampleTileImage->GetWidth(), mSampleTileImage->GetHeight() + 120, mSampleText, strlen(mSampleText));*/
+	// 테스트 지우
+	mTestJiwoo->Render(hdc);
+
+	//// 선택 타일 인덱스 표시
+	//wsprintf(mSampleText, "Sample Tile index : %d, %d", mClickStart.x, mClickStart.y);
+	//TextOut(hdc, WIN_SIZE_X - mSampleTileImage->GetWidth(), mSampleTileImage->GetHeight() + 120, mSampleText, strlen(mSampleText));
 	// 샘플타일넘버
 	wsprintf(mSampleText, "Sample Tile index : %d", mClickStart.y * SAMPLE_TILE_COUNT_X + mClickStart.x);
 	TextOut(hdc, WIN_SIZE_X - mSampleTileImage->GetWidth(), mSampleTileImage->GetHeight() + 120, mSampleText, strlen(mSampleText));
 	// 선택 타일 속성 표기
-	wsprintf(mSampleText, "Sample Tile Terrain : %d", mSampleTileInfo[mClickStart.y * SAMPLE_TILE_COUNT_X + mClickStart.x].Terrain);
+	wsprintf(mSampleText, "Tile Terrain : %d", (int)mTileInfo[mClickStart.y * TILE_COUNT_X + mClickStart.x].Terrain);
 	TextOut(hdc, WIN_SIZE_X - mSampleTileImage->GetWidth(), mSampleTileImage->GetHeight() + 160, mSampleText, strlen(mSampleText));
 
-	// 테스트 지우
-	mTestJiwoo->Render(hdc);
+
 }
 
 void MapEditor::Release()
@@ -408,9 +407,9 @@ void MapEditor::Release()
 	SAFE_RELEASE(mTestJiwoo);	
 }
 
-void MapEditor::SaveMap(int index)
+void MapEditor::SaveMap(string index)
 {
-	string saveFileName = "Save/saveMapData_" + (to_string(index)) + ".map";
+	string saveFileName = "Save/saveMapData_" + index + ".map";
 
 
 	HANDLE hFile = CreateFile(saveFileName.c_str(),
@@ -435,9 +434,9 @@ void MapEditor::SaveMap(int index)
 	CloseHandle(hFile);
 }
 
-void MapEditor::LoadMap(int index)
+void MapEditor::LoadMap(string index)
 {
-	string loadFileName = "Save/saveMapData_" + to_string(index);
+	string loadFileName = "Save/saveMapData_" + index;
 	loadFileName += ".map";
 	DWORD mapSaveTileInfo = sizeof(TagTile) * TILE_COUNT_X * TILE_COUNT_Y;
 

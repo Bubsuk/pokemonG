@@ -38,6 +38,7 @@ protected:
 	
 	eDir mDir;
 
+	bool mbControl  = {};
 	bool mbIsClick = {};
 	bool mbNeedRevise = {};
 
@@ -58,7 +59,8 @@ protected:
 	POINT mClickIndex;
 
 
-	char mSaveIndex = {};
+	string mSaveIndex = {};
+	char mSave[10] = {};
 	char mSampleText[256];
 
 public:
@@ -67,8 +69,8 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	void SaveMap(int index = 0);
-	void LoadMap(int index = 0);
+	void SaveMap(string index);
+	void LoadMap(string index);
 
 	
 

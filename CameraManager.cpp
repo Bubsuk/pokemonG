@@ -21,15 +21,14 @@ void CameraManager::MovePos(POINT& destPos, float durTime, eDir dir)
 		{
 			mObjectPos.x = mStartPos.x - fabs(destPos.x - mStartPos.x) * mElapsedTime / durTime;
 		}
-		cout << "mObjectPos.x : " << mObjectPos.x << endl;
+
 		
 		if (mElapsedTime >= durTime)
 		{
 			mObjectPos.x = destPos.x;
 			mElapsedTime = 0.0f;
 		}
-		cout << "mRivisedDurTimeX : " << durTime << endl;
-		cout << "Distance : " << fabs(destPos.x - mStartPos.x) << endl;
+	
 		break;
 	case eDir::Left:
 		mElapsedTime += DELTA_TIME;
@@ -44,15 +43,14 @@ void CameraManager::MovePos(POINT& destPos, float durTime, eDir dir)
 			mElapsedTime = 0.0f;
 		}
 
-		cout << "mRivisedDurTimeX : " << durTime << endl;
-		cout << "Distance : " << fabs(destPos.x - mStartPos.x) << endl;
+		
 		break;
 	case eDir::Up:
 		mElapsedTime += DELTA_TIME;
 		if (mObjectPos.y <= 0)
 		{
 			mObjectPos.y = mStartPos.y + fabs(destPos.y - mStartPos.y) * mElapsedTime / durTime;
-			cout << "mObjectPos.y : " << mObjectPos.y << endl;
+			
 		}
 
 		if (mElapsedTime >= durTime)
@@ -60,15 +58,14 @@ void CameraManager::MovePos(POINT& destPos, float durTime, eDir dir)
 			mObjectPos.y = destPos.y;
 			mElapsedTime = 0.0f;
 		}
-		cout << "mRivisedDurTimeY : " << durTime << endl;
-		cout << "Distance : " << fabs(mStartPos.y - destPos.y) << endl;
+		
 		break;
 	case eDir::Down:
 		mElapsedTime += DELTA_TIME;
 		if (mObjectPos.y >= -TILE_SIZE * TILE_COUNT_Y)
 		{
 			mObjectPos.y = mStartPos.y - fabs(destPos.y - mStartPos.y) * mElapsedTime / durTime;
-			cout << "mObjectPos.y : " << mObjectPos.y << endl;
+
 		}
 
 		if (mElapsedTime >= durTime)
@@ -76,8 +73,7 @@ void CameraManager::MovePos(POINT& destPos, float durTime, eDir dir)
 			mObjectPos.y = destPos.y;
 			mElapsedTime = 0.0f;
 		}
-		cout << "mRivisedDurTimeY : " << durTime << endl;
-		cout << "Distance : " << fabs(destPos.y - mStartPos.y) << endl;
+		
 		break;
 	}
 
